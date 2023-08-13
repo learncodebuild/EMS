@@ -4,7 +4,7 @@ import Wrapper from './Wrapper'
 
 const Header = ({saved}) => {
 
-    const [isIncome, setIsIncome] = useState(null)
+    const [isIncome, setIsIncome] = useState(false)
     // const handleIncome=()=>{
     //     const incomee=saved.filter((save)=>save.category==='income')
     //     setIncome(incomee)
