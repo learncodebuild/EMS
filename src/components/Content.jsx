@@ -110,12 +110,9 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
           </div>
           </div>
           <div>
-          {saved ?
-            (isIncome ? (
-              <Tabsec />
-              ) : (<Tabsec />)) :
-              (<div></div>)
-            }
+          {saved && (
+          <Tabsec />
+          )}
         </div>
         </div>
     </>
