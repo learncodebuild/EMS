@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useState, useContext } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+// import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Category from './Category'
 import { useNavigate } from 'react-router-dom';
 import { SavedContext } from './SavedContext'
@@ -21,7 +22,7 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {
-    const newSave = { date, amount, category, account, note, desc };
+    const newSave = { date, amount, catItem, accItem, note, desc, isIncome};
     if (isIncome) {
       setIncomeSave([...incomeSave, newSave]);
       setDataArr(incomeSave);
@@ -45,9 +46,11 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
   }
 
   useEffect(() => {
-    setDataArr(expenseSave);
-    console.log(expenseSave);
-  }, [expenseSave])
+    // setDataArr(expenseSave);
+    // console.log(expenseSave);
+    const mergedArr =isIncome ? incomeSave: expenseSave;
+    setDataArr(mergedArr);   
+  }, [expenseSave,expenseSave,isIncome])
 
 
   const navigate = useNavigate();
@@ -60,7 +63,7 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
       <div className="flex flex-col">
         <div className='flex flex-col w-full '>
           <div className='  mb-5  pb-7'>
-
+    
             <div className="ml-6 flex  mt-4 mb-2 ">
               <label className="text-2xl text-black mr-16">Date</label>
               {/* <input type="date" readOnly={true} value={date} className="mx-12 w-1/2 border-b border-blue-300 bg-transparent text-2xl px-3 outline-none" /> */}

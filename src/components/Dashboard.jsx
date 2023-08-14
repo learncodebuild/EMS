@@ -59,7 +59,7 @@ const Dashboard = () => {
 
     </div>
         
-    {isHeader && <Header />}
+    {/* {isHeader && <Header />} */}
     </>
     )
 }
