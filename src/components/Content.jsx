@@ -1,17 +1,22 @@
 import React, { useEffect } from 'react'
 import { useState, useContext } from 'react'
-import DatePicker from 'react-datepicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import 'react-datepicker/dist/react-datepicker.css'
+import dayjs from 'dayjs';
 // import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Category from './Category'
 import { useNavigate } from 'react-router-dom';
 import { SavedContext } from './SavedContext'
 import Tabsec from './Tabsec'
+import { compareAsc, format } from 'date-fns'
 
 const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem, isIncome }) => {
 
   const [dataArr, setDataArr] = useContext(SavedContext)
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date().toISOString());
   const [amount, setAmount] = useState();
   const [category, setCategory] = useState('');
   const [account, setAccount] = useState('');
@@ -23,6 +28,8 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
 
   const handleSave = () => {
     const newSave = { date, amount, catItem, accItem, note, desc, isIncome};
+    console.log(newSave);
+    if(!(!amount || !date || !catItem || !accItem)){
     if (isIncome) {
       setIncomeSave([...incomeSave, newSave]);
       setDataArr(incomeSave);
@@ -34,7 +41,7 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
     }
     // console.log(isIncome);
     setSaved(true);
-    setDate('');
+    setDate(new Date().toISOString());
     setAmount('');
     setCategory('');
     setAccount('');
@@ -42,7 +49,10 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
     setDesc('');
     setCatItem('')
     setAccItem('')
-
+}
+else{
+  alert("empty fields cannot be saved")
+}
   }
 
   useEffect(() => {
@@ -50,7 +60,7 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
     // console.log(expenseSave);
     const mergedArr =isIncome ? incomeSave: expenseSave;
     setDataArr(mergedArr);   
-  }, [expenseSave,expenseSave,isIncome])
+  }, [expenseSave,incomeSave,isIncome])
 
 
   const navigate = useNavigate();
@@ -67,9 +77,15 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
             <div className="ml-6 flex  mt-4 mb-2 ">
               <label className="text-2xl text-black mr-16">Date</label>
               {/* <input type="date" readOnly={true} value={date} className="mx-12 w-1/2 border-b border-blue-300 bg-transparent text-2xl px-3 outline-none" /> */}
-              <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat='dd/MM/yyyy' placeholderText='dd/MM/yyyy'>
+              {/* <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat='dd/MM/yyyy' placeholderText='dd/MM/yyyy'>
+            </DatePicker> */}
 
-            </DatePicker>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DateTimePicker']}>
+                  <DateTimePicker defaultValue={dayjs(date)} onChange={d => setDate(d.$d)} />
+                </DemoContainer>
+              </LocalizationProvider>
+
             </div>
 
             <div className="ml-6 flex  mt-4 mb-2 ">
@@ -113,9 +129,9 @@ const Content = ({ setIsAcc, setIsCat, catItem, accItem, setCatItem, setAccItem,
           </div>
           </div>
           <div>
-          {saved && (
+          {/* {saved && (
           <Tabsec />
-          )}
+          )} */}
         </div>
         </div>
     </>
