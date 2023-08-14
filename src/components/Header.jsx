@@ -32,7 +32,7 @@ const Header = ({saved}) => {
     <Wrapper
       isIncome={isIncome}
     />
-         </div>
+      </div>
   </>
   )
 }

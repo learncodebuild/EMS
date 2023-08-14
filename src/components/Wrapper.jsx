@@ -28,7 +28,7 @@ const Wrapper = ({isIncome}) => {
      ])
 
     return (
-            <div className="flex justify-between">
+            <div className="bg-slate-100 flex justify-between">
                 <Content 
                     setIsAcc={setIsAcc}
                     setIsCat={setIsCat}
