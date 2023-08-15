@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Tabt = (clickTabt) => {
+const Tab3 = (clickTabt) => {
     return (
         <>
 
@@ -14,4 +14,4 @@ const Tabt = (clickTabt) => {
     )
 }
 
-export default Tabt
+export default Tab3

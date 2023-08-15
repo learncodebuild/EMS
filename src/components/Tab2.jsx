@@ -3,7 +3,7 @@ import { Drawer } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-const Tabf = ({onClick,handleClose,handleOpen}) => {
+const Tab2 = ({onClick,handleClose,handleOpen}) => {
   return (
     <>
             <Drawer anchor="left" open={onClick} onOpen={handleOpen} onClose={handleClose}>
@@ -27,4 +27,4 @@ const Tabf = ({onClick,handleClose,handleOpen}) => {
   )
 }
 
-export default Tabf
+export default Tab2
