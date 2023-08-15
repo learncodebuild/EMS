@@ -65,7 +65,7 @@ const columns = [
 // ];
 
 
-const Tabsec = (clickTab) => {
+const Tab1 = (clickTab) => {
 
   const [dataArr] = useContext(SavedContext)
   // console.log(dataArr);
@@ -208,4 +208,4 @@ const Tabsec = (clickTab) => {
   )
 }
 
-export default Tabsec
+export default Tab1
