@@ -1,7 +1,3 @@
-const AccountData=[
-    'Account',
-    'Card',
-    'Cash',
-]
+const AccountData = ["Account", "Card", "Cash"];
 
-export default AccountData
+export default AccountData;

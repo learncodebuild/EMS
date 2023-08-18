@@ -1,18 +1,52 @@
-// import React from 'react'
-// const SaveBtn = ({handleSave,saved}) => {
+import React from "react";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
-//   return (
-//     <>
-//     <div>
-//       <button className="save mt-7 mx-4 rounded-lg bg-red-700 text-2xl text-white px-9 py-2 mx-4" onClick={handleSave}>Save</button>
-//       </div>  
-//       <div>
-//           <div>{saved.map((item) => { <div><p>Date: {item.date}</p>
-//               <p>Amount: {item.amount}</p> </div>
-// })}</div>
-//           </div>
-//       </>
-//   )
-// }
+const SaveBtn = () => {
+  const [open, setOpen] = React.useState(false);
 
-// export default SaveBtn
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
+  return (
+    <div>
+      <Button onClick={handleClick}>Open simple snackbar</Button>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Note archived"
+        action={action}
+      />
+    </div>
+  );
+};
+
+export default SaveBtn;

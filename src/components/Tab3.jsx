@@ -1,17 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Tab3 = (clickTabt) => {
-    return (
-        <>
+  return <>{clickTabt && <div className="text-black">Tab 3 Opened</div>}</>;
+};
 
-            {clickTabt && (
-                <div className='text-black'>
-                    Tab 3 Opened
-                </div>
-            )
-            }
-        </>
-    )
-}
-
-export default Tab3
+export default Tab3;

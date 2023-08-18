@@ -1,76 +1,45 @@
-import React from 'react'
-import { useState,useContext } from 'react'
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { SavedContext } from './SavedContext'
+import React, { useState, useContext, useEffect } from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { SavedContext } from "./SavedContext";
+import { useLocation } from "react-router-dom";
 
 const columns = [
-  // { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'date', label: 'Date', minWidth: 170 },
-  { id: 'amount', label:'Amount', minWidth: 170 },
-  { id: 'catItem', label: 'Category', minWidth: 170},
-  { id: 'accItem', label: 'Account', minWidth: 170 },
-  { id: 'note', label: 'Note', minWidth: 170 },
-  // { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-  // {
-  //   id: 'population',
-  //   label: 'Population',
-  //   minWidth: 170,
-  //   align: 'right',
-  //   format: (value) => value.toLocaleString('en-US'),
-  // },
-  // {
-  //   id: 'size',
-  //   label: 'Size\u00a0(km\u00b2)',
-  //   minWidth: 170,
-  //   align: 'right',
-  //   format: (value) => value.toLocaleString('en-US'),
-  // },
-  // {
-  //   id: 'density',
-  //   label: 'Density',
-  //   minWidth: 170,
-  //   align: 'right',
-  //   format: (value) => value.toFixed(2),
-  // },
+  { id: "date", label: "Date", minWidth: 170 },
+  { id: "amount", label: "Amount", minWidth: 170 },
+  { id: "catItem", label: "Category", minWidth: 170 },
+  { id: "accItem", label: "Account", minWidth: 170 },
+  { id: "note", label: "Note", minWidth: 170 },
 ];
 
-// function createData(name, code, population, size) {
-//   const density = population / size;
-//   return { name, code, population, size, density };
-// }
-
-// const rows = [
-//   createData('India', 'IN', 1324171354, 3287263),
-//   createData('China', 'CN', 1403500365, 9596961),
-//   createData('Italy', 'IT', 60483973, 301340),
-//   createData('United States', 'US', 327167434, 9833520),
-//   createData('Canada', 'CA', 37602103, 9984670),
-//   createData('Australia', 'AU', 25475400, 7692024),
-//   createData('Germany', 'DE', 83019200, 357578),
-//   createData('Ireland', 'IE', 4857000, 70273),
-//   createData('Mexico', 'MX', 126577691, 1972550),
-//   createData('Japan', 'JP', 126317000, 377973),
-//   createData('France', 'FR', 67022000, 640679),
-//   createData('United Kingdom', 'GB', 67545757, 242495),
-//   createData('Russia', 'RU', 146793744, 17098246),
-//   createData('Nigeria', 'NG', 200962417, 923768),
-//   createData('Brazil', 'BR', 210147125, 8515767),
-// ];
-
-
 const Tab1 = (clickTab) => {
+  const location = useLocation();
+  const path = location.pathname;
+  const [dataArr] = useContext(SavedContext);
+  const [showBtns] = useContext(SavedContext);
+  const [isIn, setIsIn] = useState(true);
+  const [incomeData, setIncomeData] = useState([]);
+  const [expenseData, setExpenseData] = useState([]);
+  useEffect(() => {
+    const i = dataArr.filter((data) => data.isIncome == true);
+    setIncomeData(i);
 
-  const [dataArr] = useContext(SavedContext)
-  // console.log(dataArr);
-  const [isIncome, setIsIncome] = useState(true);
-  const [toggle, setToggle] = useState(false)
+    const j = dataArr.filter((data) => data.isIncome == false);
+    setExpenseData(j);
+  }, [dataArr]);
+
+  const [checkPath, setCheckPath] = useState(true);
+  useEffect(() => {
+    if (path !== "/") {
+      setCheckPath(true);
+    }
+  }, []);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -78,13 +47,11 @@ const Tab1 = (clickTab) => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  function createData(date,amount,category,account,note) {
+  function createData(date, amount, category, account, note) {
     return { date, amount, category, account, note };
   }
 
-  const rows = [
-    createData(dataArr),
-  ];
+  const rows = [createData(dataArr)];
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -92,18 +59,34 @@ const Tab1 = (clickTab) => {
 
   return (
     <>
-
-      {clickTab && (
+      {clickTab && dataArr == "" ? (
+        <div>No data</div>
+      ) : (
         <div className="flex flex-col mx-5">
-          <div className='flex flex-row mt-10 mb-1 gap-8 content-center'>
-            <button className="rounded-lg text-xl px-5 py-2 bg-pink-300" onClick={() => setToggle(true)}>Income</button>
-            <button className="rounded-lg text-xl px-5 py-2 bg-pink-300" onClick={() => setIsIncome(false)}>Expense</button>
-          </div>
+          {
+            <div className="flex flex-row mt-10 mb-1 gap-8 content-center">
+              <button
+                className="rounded-lg text-xl px-5 py-2 bg-pink-300"
+                onClick={() => {
+                  setIsIn(true);
+                }}
+              >
+                In
+              </button>
+              <button
+                className="rounded-lg text-xl px-5 py-2 bg-pink-300"
+                onClick={() => {
+                  setIsIn(false);
+                }}
+              >
+                Ex
+              </button>
+            </div>
+          }
 
           <div className="bg-red-300 px-4 py-2">
-            {
-            !toggle && !isIncome ? (
-              <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            {isIn ? (
+              <Paper sx={{ width: "100%", overflow: "hidden" }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                   <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -120,16 +103,28 @@ const Tab1 = (clickTab) => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {dataArr
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      {incomeData
+                        .slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
                         .map((row) => {
                           return (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                            <TableRow
+                              hover
+                              role="checkbox"
+                              tabIndex={-1}
+                              key={row.code}
+                            >
                               {columns.map((column) => {
                                 const value = row[column.id];
                                 return (
-                                  <TableCell key={column.id} align={column.align}>
-                                    {column.format ? column.format(value)
+                                  <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                  >
+                                    {column.format
+                                      ? column.format(value)
                                       : value}
                                   </TableCell>
                                 );
@@ -150,62 +145,72 @@ const Tab1 = (clickTab) => {
                   onRowsPerPageChange={handleChangeRowsPerPage}
                 />
               </Paper>
-              // <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, laudantium?</p>
             ) : (
-                <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                  <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label="sticky table">
-                      <TableHead>
-                        <TableRow>
-                          {columns.map((column) => (
-                            <TableCell
-                              key={column.id}
-                              align={column.align}
-                              style={{ minWidth: column.minWidth }}
+              <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                <TableContainer sx={{ maxHeight: 440 }}>
+                  <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                      <TableRow>
+                        {columns.map((column) => (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={{ minWidth: column.minWidth }}
+                          >
+                            {column.label}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {expenseData
+                        .slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                        .map((row) => {
+                          return (
+                            <TableRow
+                              hover
+                              role="checkbox"
+                              tabIndex={-1}
+                              key={row.code}
                             >
-                              {column.label}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {dataArr
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((row) => {
-                            return (
-                              <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                {columns.map((column) => {
-                                  const value = row[column.id];
-                                  return (
-                                    <TableCell key={column.id} align={column.align}>
-                                      {column.format ? column.format(value)
-                                        : value}
-                                    </TableCell>
-                                  );
-                                })}
-                              </TableRow>
-                            );
-                          })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </Paper>
+                              {columns.map((column) => {
+                                const value = row[column.id];
+                                return (
+                                  <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                  >
+                                    {column.format
+                                      ? column.format(value)
+                                      : value}
+                                  </TableCell>
+                                );
+                              })}
+                            </TableRow>
+                          );
+                        })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <TablePagination
+                  rowsPerPageOptions={[10, 25, 100]}
+                  component="div"
+                  count={rows.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </Paper>
             )}
           </div>
         </div>
-      )
-      }
+      )}
     </>
-  )
-}
+  );
+};
 
-export default Tab1
+export default Tab1;
