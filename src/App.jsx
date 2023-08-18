@@ -1,7 +1,8 @@
 import Header from './components/Header'
 import Dashboard from './components/Dashboard'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {SavedContext,SavedProvider} from './components/SavedContext';
+import {SavedProvider} from './components/SavedContext';
+import Tab1 from './components/Tab1';
 
 function App() {
   return (
